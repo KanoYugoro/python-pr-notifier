@@ -6,9 +6,6 @@ from .MockGithubRequests import MockGithubRequests
 class BasicTestSuite(unittest.TestCase):
     """Basic test cases."""
 
-    def test_dummyTest(self):
-        assert True
-
     def test_isPRTooOld_yes(self):
         PRObject = {'updated_at': '2011-01-26T19:01:12Z'}
         self.assertTrue(github_retrieval.isPRTooOld(PRObject,datetime.date(2012,1,1)))
@@ -71,6 +68,10 @@ class BasicTestSuite(unittest.TestCase):
         #This test should grab no PRs in the list, because it is more than 7 days past the last date.
         result = github_retrieval.get_Recent_PRs(datetime.date(2011,1,29), datetime.timedelta(days=7), 'dummyOrg', 'dummyRepo', pr_state = 'all', req_module = ghq)
         self.assertEqual(len(result), 0)
+
+    def test_SortPRs(self):
+        ghq = MockGithubRequests()
+        result = github_retrieval.SortPRs(ghq.testingGetAll(),datetime.date(2011,1,22), datetime.timedelta(days=7))
 
 if __name__ == '__main__':
     unittest.main()

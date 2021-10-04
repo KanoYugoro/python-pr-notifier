@@ -1,15 +1,11 @@
 import requests
-import datetime
-import re
+from .date_parsing import reParseDate
 
 from requests.api import request
 
 def isPRTooOld(PRobj, cutoffTime):
     updateTime = PRobj['updated_at']
-    regexGroups = re.search("(?P<year>\d+)-(?P<month>\d+)-(?P<day>\d+)T",updateTime)
-    if regexGroups == None:
-        raise ValueError(f'Invalid date pulled from Pull Request update_at field: {updateTime}')
-    PRTime = datetime.date(int(regexGroups.group('year')),int(regexGroups.group('month')),int(regexGroups.group('day')))
+    PRTime = reParseDate(updateTime)
     return cutoffTime > PRTime
     
 def getCutoffTime(currentDate, timeDelta):
@@ -44,3 +40,23 @@ def get_Recent_PRs(currentDate, timeDelta, org, repo, pr_state = 'all', req_modu
     
     return jsonCollection
     
+def SortPRs(jsonCollection, currentDate, timeDelta):
+    openedPRs = []
+    closedPRs = []
+    inProgressPRs = []
+    cutoffTime = getCutoffTime(currentDate, timeDelta)
+
+    for pr in jsonCollection:
+        if (pr['state'] == 'open'):
+            if cutoffTime > reParseDate(pr['created_at']):
+                inProgressPRs = inProgressPRs + [pr]
+            else:
+                openedPRs = openedPRs + [pr]
+        elif (pr['state'] == 'closed' and cutoffTime < reParseDate(pr['closed_at'])):
+            closedPRs = closedPRs + [pr]
+
+    return {
+        'open': openedPRs,
+        'closed': closedPRs,
+        'in-progress': inProgressPRs
+    }
