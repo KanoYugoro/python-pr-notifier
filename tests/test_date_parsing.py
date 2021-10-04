@@ -8,7 +8,7 @@ class BasicTestSuite(unittest.TestCase):
 
     def test_reParseDate_validInput(self):
         testDate = '2011-01-26T19:01:12Z'
-        self.assertEqual(date_parsing.reParseDate(testDate), datetime.date(2012,1,1))
+        self.assertEqual(date_parsing.reParseDate(testDate), datetime.date(2011,1,26))
 
     def test_reParseDate_invalidInput(self):
         testDate = 'NotADate'

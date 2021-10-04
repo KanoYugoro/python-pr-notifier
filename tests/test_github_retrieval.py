@@ -13,10 +13,6 @@ class BasicTestSuite(unittest.TestCase):
     def test_isPRTooOld_no(self):
         PRObject = {'updated_at': '2011-01-26T19:01:12Z'}
         self.assertFalse(github_retrieval.isPRTooOld(PRObject,datetime.date(2011,1,25)))
-    
-    def test_isPRTooOld_invalidInput(self):
-        PRObject = {'updated_at': 'NotADate'}
-        self.assertRaisesRegex(ValueError, 'Invalid date pulled from Pull Request update_at field: NotADate', github_retrieval.isPRTooOld, PRObject, datetime.date(2011,1,25))
 
     def test_getCutoffTime(self):
         now = datetime.date(2011,1,25)
@@ -72,6 +68,7 @@ class BasicTestSuite(unittest.TestCase):
     def test_SortPRs(self):
         ghq = MockGithubRequests()
         result = github_retrieval.SortPRs(ghq.testingGetAll(),datetime.date(2011,1,22), datetime.timedelta(days=7))
+        print(result)
 
 if __name__ == '__main__':
     unittest.main()
