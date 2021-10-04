@@ -47,7 +47,7 @@ def SortPRs(jsonCollection, currentDate, timeDelta):
     cutoffTime = getCutoffTime(currentDate, timeDelta)
 
     for pr in jsonCollection:
-        if (pr['state'] == 'open'):
+        if (pr['state'] == 'open'): #If the state is open, but it was made before our cutoff search time it's in progress
             if cutoffTime > reParseDate(pr['created_at']):
                 inProgressPRs = inProgressPRs + [pr]
             else:

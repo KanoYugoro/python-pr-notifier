@@ -1,7 +1,6 @@
 from pyprnotifier import date_parsing
 import unittest
 import datetime
-from .MockGithubRequests import MockGithubRequests
 
 class BasicTestSuite(unittest.TestCase):
     """Basic test cases."""
