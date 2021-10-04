@@ -68,7 +68,15 @@ class BasicTestSuite(unittest.TestCase):
     def test_SortPRs(self):
         ghq = MockGithubRequests()
         result = github_retrieval.SortPRs(ghq.testingGetAll(),datetime.date(2011,1,22), datetime.timedelta(days=7))
-        print(result)
+        self.assertEqual(len(result['open']),2)
+        self.assertEqual(result['open'][0]['title'],'The Fifth PR')
+        self.assertEqual(result['open'][1]['title'],'The Third PR')
+        self.assertEqual(len(result['closed']),3)
+        self.assertEqual(result['closed'][0]['title'],'The Sixth PR')
+        self.assertEqual(result['closed'][1]['title'],'The Fourth PR')
+        self.assertEqual(result['closed'][2]['title'],'The First PR')
+        self.assertEqual(len(result['in-progress']),1)
+        self.assertEqual(result['in-progress'][0]['title'],'The Second PR')
 
 if __name__ == '__main__':
     unittest.main()
