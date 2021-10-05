@@ -18,7 +18,6 @@ def get_Recent_PRs(currentDate, timeDelta, org, repo, pr_state = 'all', req_modu
     jsonCollection = []
     page_number = 0
     cutoffDate = getCutoffTime(currentDate, timeDelta)
-    print(cutoffDate)
     foundCutoff = False
 
     while (not foundCutoff):
@@ -30,9 +29,7 @@ def get_Recent_PRs(currentDate, timeDelta, org, repo, pr_state = 'all', req_modu
 
         index = 0
         while (index < len(requestResult) and not foundCutoff):
-            print('hit')
             foundCutoff = isPRTooOld(requestResult[index], cutoffDate)
-            print(requestResult[index])
             if (not foundCutoff):
                 index = index + 1
         
@@ -41,7 +38,6 @@ def get_Recent_PRs(currentDate, timeDelta, org, repo, pr_state = 'all', req_modu
         elif (foundCutoff): #we found the PR in the list that is too old to care about, so append to that point and truncate the rest.
             jsonCollection = jsonCollection + (requestResult[0:index])
 
-        print(jsonCollection)
     return jsonCollection
     
 def SortPRs(jsonCollection, currentDate, timeDelta):
