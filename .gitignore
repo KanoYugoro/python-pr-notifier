@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Anson's custom credential file for sending stuff over smtp
+credential.json
+
 # Distribution / packaging
 .Python
 build/

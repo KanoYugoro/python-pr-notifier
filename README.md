@@ -4,6 +4,15 @@ A python script to retrieve a summary of all opened, closed, and in progress pul
 ## Script Usage
 A simple makefile has been provided to facilitate running this python project.  Simply type `make run` and this project will scan against PyGithub/PyGithub.  If you wish to run this script against a different project, execute the main.py file in this directory with the provided arguments in the next section. `make test` and `make test-verbose` will execute the unit tests for this project.
 
+In order to have the output sent as an email, you must create a `credentials.json` file in the same directory as `main.py`.  This file should look something like this:
+``` json
+{
+    "smtp_host": "smtp.gmail.com:587",
+    "username": "SoAndSo@gmail.com",
+    "password": "SoAndSoSPasSWord"
+}
+```
+
 ## Argument Reference
 - `--org`, a required, case-sensitive string argument that indicates which public github organization the repository lives in.
 - `--repo`, a required, case-sensitive string argument that indicates which public github repository to look at.
@@ -37,3 +46,6 @@ PR #2007 - tox.ini: Ignoring long lines and setting max-line-length? by cclauss 
 I hope this information is useful to you.
 -Anson's script
 ```
+
+## Notes about this script
+This script should handle the github api's pagination that occurs if too many results were returned, for example if it was run against a really busy repo.  If that was done unauthenticated, however, the script may not complete or may error out because of the unauthenticated rate limit of 60 requests per hour.
