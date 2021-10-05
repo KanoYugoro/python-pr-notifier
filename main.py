@@ -1,7 +1,10 @@
 import argparse
 import datetime
+import os.path
+import json
 from pyprnotifier import github_retrieval
 from pyprnotifier import custom_email_format
+from pyprnotifier import emailing
 
 parser = argparse.ArgumentParser(description='This script retrieves recent Pull Requests from a publicly available git repository, formats info about them, and outputs them.')
 parser.add_argument('--org', type=str,  help='The github org the repository lives in.', required=True)
@@ -20,5 +23,16 @@ email_body = custom_email_format.formatEmailBody(args.org, args.repo, args.timef
 print('Script Output:')
 print('FROM: no-reply@ansonscript.com')
 print(f'TO: {args.email}')
-print(f'SUBJECT: Pull Request report for {args.org}/{args.repo} for the {args.timeframe} days preceding {today}')
+email_subject = f'Pull Request report for {args.org}/{args.repo} for the {args.timeframe} days preceding {today}'
+print(f'SUBJECT: {email_subject}')
 print(f'BODY: \n{email_body}')
+
+if (os.path.exists('./credential.json')):
+    print('Credentials.json found, attempting to send results out via email.')
+    if args.email is not None and args.email != "" and args.email != 'notprovided@nodomain.com':
+        print(f'Attempting to send results to {args.email}')
+        with open('./credential.json', mode='r') as creds:
+            c = json.load(creds)
+            emailing.sendEmail(args.email,c['username'],c['password'],c['smtp_host'],c['smtp_port'],email_subject,email_body)
+    else:
+        print('Must provide --email argument with intended recipient.')

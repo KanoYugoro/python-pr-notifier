@@ -7,11 +7,13 @@ A simple makefile has been provided to facilitate running this python project.  
 In order to have the output sent as an email, you must create a `credentials.json` file in the same directory as `main.py`.  This file should look something like this:
 ``` json
 {
-    "smtp_host": "smtp.gmail.com:587",
+    "smtp_host": "smtp.gmail.com",
+    "smtp_port": 465,
     "username": "SoAndSo@gmail.com",
     "password": "SoAndSoSPasSWord"
 }
 ```
+If the intended solution is to use gmail, you'll have to [make an app specific password](https://support.google.com/accounts/answer/185833?hl=en) and use that password in the credential.json file.  In addition, the `--email` parameter must be provided to the script.
 
 ## Argument Reference
 - `--org`, a required, case-sensitive string argument that indicates which public github organization the repository lives in.
